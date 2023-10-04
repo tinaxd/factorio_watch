@@ -2,6 +2,7 @@
 
 require_relative "webhook"
 require "logger"
+require "net/http"
 require_relative "factorio_watch/version"
 
 # This module provides functionality for watching a Factorio server and sending notifications to a Discord webhook
@@ -22,7 +23,7 @@ module FactorioWatch
     begin
       send_discord_webhook(endpoint, content)
       MyLogger.info("send_factorio_notification success: player=#{player_name}, is_join=#{is_join}")
-    rescue HTTPError, HTTPRetriableError, HTTPServerException, HTTPFatalError => e
+    rescue Net::HTTPExceptions => e
       MyLogger.error("Failed to send Discord webhook: #{e}")
     end
   end
