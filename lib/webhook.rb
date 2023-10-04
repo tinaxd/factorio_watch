@@ -16,7 +16,7 @@ def send_discord_webhook(endpoint, message)
   req["Content-Type"] = "application/json"
   req.body = payload.to_json
   res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") do |http|
-    http.request(req).body
+    http.request(req)
   end
 
   res.value
