@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "json"
+require "net/http"
+
 # rubocop:disable Metrics/MethodLength
 def send_discord_webhook(endpoint, message)
   uri = URI.parse(endpoint)
