@@ -1,0 +1,12 @@
+/bin
+/config
+/data
+/mods
+/saves
+/sorbet
+/temp
+/.lock
+/*.dat
+/*.cfg
+/*.log
+/*.json
