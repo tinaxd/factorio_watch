@@ -21,13 +21,15 @@ module FactorioWatch
 
     begin
       send_discord_webhook(endpoint, content)
+      MyLogger.info("send_factorio_notification success: player=#{player_name}, is_join=#{is_join}")
     rescue HTTPError, HTTPRetriableError, HTTPServerException, HTTPFatalError => e
       MyLogger.error("Failed to send Discord webhook: #{e}")
     end
   end
 
   # rubocop:disable Metrics/MethodLength
-  def watch_factorio(factorio_path, factorio_args, _endpoint)
+  # rubocop:disable Metrics/AbcSize
+  def watch_factorio(factorio_path, factorio_args, endpoint)
     io = IO.popen([factorio_path, *factorio_args, { pgroup: 0 }], mode: "r")
     MyLogger.info("Process started")
 
@@ -36,6 +38,19 @@ module FactorioWatch
       MyLogger.debug("Reader thread started")
       while (line = io.gets)
         puts line
+        # check for player join/leave
+        checks = [
+          [JOIN_RE, true],
+          [LEAVE_RE, false]
+        ]
+        checks.each do |re, is_join|
+          match = re.match(line)
+          next if match.nil?
+
+          player_name = match.captures[0]
+          send_factorio_notification(endpoint, is_join, player_name)
+          break
+        end
       end
     end
 
@@ -53,6 +68,7 @@ module FactorioWatch
     MyLogger.debug("Watcher process is terminating")
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   module_function :watch_factorio
 end
