@@ -70,5 +70,5 @@ module FactorioWatch
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
-  module_function :watch_factorio
+  module_function :watch_factorio, :send_factorio_notification
 end
