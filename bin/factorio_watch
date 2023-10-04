@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "factorio_watch"
+
+# Get arguments
+args = ARGV
+if args.length < 3
+  puts "Usage: #{$PROGRAM_NAME} <factorio_path> <endpoint> <factorio_args>"
+  return
+end
+
+factorio_path = args[0]
+endpoint = args[1]
+factorio_args = args[2..]
+FactorioWatch.watch_factorio(factorio_path, factorio_args, endpoint)
