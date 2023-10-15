@@ -2,6 +2,7 @@
 
 require "json"
 require "net/http"
+require "time"
 
 # rubocop:disable Metrics/MethodLength
 def send_discord_webhook(endpoint, message)
