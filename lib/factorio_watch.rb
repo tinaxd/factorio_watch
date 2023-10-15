@@ -28,9 +28,18 @@ module FactorioWatch
     end
   end
 
+  def send_gamewatch(gw_endpoint, is_join, player_name)
+    begin
+      send_gw_check(gw_endpoint, is_join, player_name)
+      MyLogger.info("send_gamewatch success: player=#{player_name}, is_join=#{is_join}")
+    rescue Net::HTTPExceptions => e
+      MyLogger.error("Failed to send GameWatch check: #{e}")
+    end
+  end
+
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
-  def watch_factorio(factorio_path, factorio_args, endpoint)
+  def watch_factorio(factorio_path, factorio_args, endpoint, gw_endpoint)
     io = IO.popen([factorio_path, *factorio_args, { pgroup: 0 }], mode: "r")
     MyLogger.info("Process started")
 
@@ -50,6 +59,7 @@ module FactorioWatch
 
           player_name = match.captures[0]
           send_factorio_notification(endpoint, is_join, player_name)
+          send_gamewatch(gw_endpoint, is_join, player_name)
           break
         end
       end
