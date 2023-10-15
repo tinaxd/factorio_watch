@@ -28,7 +28,7 @@ def send_gw_check(gw_endpoint, is_join, player_name)
   uri = URI.parse(gw_endpoint)
   payload = {
     in_game_name: player_name,
-    is_join: is_join,
+    type: is_join ? "start" : "stop",
     time: Time.now.iso8601,
     game_name: "Factorio"
   }
