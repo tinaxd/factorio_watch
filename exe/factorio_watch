@@ -7,12 +7,15 @@ require "factorio_watch"
 # Get arguments
 args = ARGV
 if args.length < 4
-  puts "Usage: #{$PROGRAM_NAME} <factorio_path> <endpoint> <gw_endpoint> <factorio_args>"
+  puts "Usage: #{$PROGRAM_NAME} <factorio_path> <factorio_args>"
   return
 end
 
 factorio_path = args[0]
-endpoint = args[1]
-gw_endpoint = args[2]
-factorio_args = args[3..]
-FactorioWatch.watch_factorio(factorio_path, factorio_args, endpoint, gw_endpoint)
+factorio_args = args[1..]
+endpoint = ENV["DISCORD_WEBHOOK"]
+if endpoint.nil?
+  puts "DISCORD_WEBHOOK environment variable is not set"
+  Kernel.exit(1)
+end
+FactorioWatch.watch_factorio(factorio_path, factorio_args, endpoint)

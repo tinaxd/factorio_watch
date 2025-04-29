@@ -39,7 +39,7 @@ module FactorioWatch
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
-  def watch_factorio(factorio_path, factorio_args, endpoint, gw_endpoint)
+  def watch_factorio(factorio_path, factorio_args, endpoint)
     io = IO.popen([factorio_path, *factorio_args, { pgroup: 0 }], mode: "r")
     MyLogger.info("Process started")
 
@@ -59,7 +59,7 @@ module FactorioWatch
 
           player_name = match.captures[0]
           send_factorio_notification(endpoint, is_join, player_name)
-          send_gamewatch(gw_endpoint, is_join, player_name)
+          # send_gamewatch(gw_endpoint, is_join, player_name)
           break
         end
       end
